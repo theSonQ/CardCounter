@@ -1,0 +1,6 @@
+## Title: Karty potworow
+## Version: 1.7
+## Notes: Liczy zdobyte karty potworow ze skanowania plecaka - okienko z resetem | /lk
+## Author: theSonQ
+CardCounter.lua
+CardCounter.xml

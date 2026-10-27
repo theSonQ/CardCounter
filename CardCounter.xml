@@ -1,0 +1,200 @@
+<Ui xmlns="http://www.runewaker.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.runewaker.com/ UI.xsd">
+	<!-- Osobne, krotkie pola tekstowe. Brak jednego dlugiego FontString. -->
+	<Frame name="CardCounterRowTemplate" virtual="true">
+		<Size><AbsDimension x="296" y="20"/></Size>
+		<Layers><Layer level="ARTWORK">
+			<FontString name="$parent_Name" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+				<Size><AbsDimension x="264" y="18"/></Size>
+				<Anchors><Anchor point="TOPLEFT"/></Anchors>
+				<FontHeight><AbsValue val="12"/></FontHeight>
+			</FontString>
+			<FontString name="$parent_Count" inherits="GameFontHighlight" justifyH="RIGHT" justifyV="TOP">
+				<Size><AbsDimension x="28" y="18"/></Size>
+				<Anchors><Anchor point="TOPRIGHT"/></Anchors>
+				<FontHeight><AbsValue val="12"/></FontHeight>
+			</FontString>
+		</Layer></Layers>
+	</Frame>
+	<!-- Zawsze widoczny, nieaktywny sterownik: skanowanie dziala przy ukrytym oknie. -->
+	<Frame name="CardCounterDriver" parent="UIParent" hidden="false" enableMouse="false">
+		<Size><AbsDimension x="1" y="1"/></Size>
+		<Anchors><Anchor point="TOPLEFT"/></Anchors>
+		<Scripts>
+			<OnLoad>CardCounter.OnLoad(this); this:RegisterForDrag("LeftButton")</OnLoad>
+			<OnEvent>CardCounter.OnEvent(this, event)</OnEvent>
+			<OnUpdate>CardCounter.OnUpdate(this)</OnUpdate>
+		</Scripts>
+	</Frame>
+	<Button name="CardCounterMinimapButton" parent="UIParent" enableMouse="true">
+		<Size><AbsDimension x="24" y="24"/></Size>
+		<Anchors><Anchor point="CENTER" relativeTo="MinimapViewFrame" relativePoint="CENTER"><Offset><RelDimension x="-80" y="-14"/></Offset></Anchor></Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\Tooltips\Tooltip-Background"/>
+			</Layer>
+		</Layers>
+		<NormalTexture file="interface/icons/item_moncard"/>
+		<HighlightTexture file="Interface\Buttons\PanelSmallButtonHighlight" alphaMode="ADD"/>
+		<Scripts>
+			<OnLoad>
+				this:RegisterForClicks("LeftButton", "RightButton")
+				this:RegisterForDrag("LeftButton")
+			</OnLoad>
+			<OnClick>CardCounter.MinimapClick(this, key)</OnClick>
+			<OnEnter>
+				GameTooltip:SetOwner(this, "ANCHOR_LEFT")
+				GameTooltip:SetText("Karty potworow")
+				GameTooltip:AddLine("LPM: pokaz/ukryj okienko", 0.8, 0.8, 0.8)
+				GameTooltip:AddLine("PPM: zapisz sesje i zacznij nowa", 0.8, 0.8, 0.8)
+				GameTooltip:AddLine("Przeciagnij, aby przesunac ikone", 0.5, 0.5, 0.5)
+				GameTooltip:Show()
+			</OnEnter>
+			<OnLeave>GameTooltip:Hide()</OnLeave>
+			<OnDragStart>CardCounter.MinimapDragStart(this)</OnDragStart>
+			<OnDragStop>CardCounter.MinimapDragStop(this)</OnDragStop>
+		</Scripts>
+	</Button>
+	<Frame name="CardCounterFrame" parent="UIParent" hidden="true" enableMouse="true">
+		<Size><AbsDimension x="340" y="406"/></Size>
+		<Anchors><Anchor point="CENTER"><Offset><AbsDimension x="160" y="0"/></Offset></Anchor></Anchors>
+		<Backdrop bgFile="Interface\Tooltips\Tooltip-Background" edgeFile="Interface\Tooltips\Tooltip-border" tile="true">
+			<BackgroundInsets><AbsInset top="4" left="4" bottom="4" right="4"/></BackgroundInsets>
+			<EdgeSize><AbsValue val="16"/></EdgeSize>
+			<TileSize><AbsValue val="16"/></TileSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parent_Title" inherits="GameFontNormal" text="Karty potworow">
+					<Anchors><Anchor point="TOP"><Offset><AbsDimension x="0" y="6"/></Offset></Anchor></Anchors>
+				</FontString>
+				<FontString name="$parent_Total" inherits="GameFontHighlight" justifyH="LEFT">
+					<Size><AbsDimension x="318" y="18"/></Size>
+					<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="10" y="28"/></Offset></Anchor></Anchors>
+					<FontHeight><AbsValue val="12"/></FontHeight>
+				</FontString>
+				<FontString name="$parent_Session" inherits="GameFontNormal" justifyH="CENTER">
+					<Size><AbsDimension x="260" y="18"/></Size>
+					<Anchors><Anchor point="TOP"><Offset><AbsDimension x="0" y="48"/></Offset></Anchor></Anchors>
+					<FontHeight><AbsValue val="11"/></FontHeight>
+				</FontString>
+				<FontString name="$parent_Page" inherits="GameFontHighlight" justifyH="LEFT">
+					<Size><AbsDimension x="318" y="18"/></Size>
+					<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="10" y="316"/></Offset></Anchor></Anchors>
+					<FontHeight><AbsValue val="11"/></FontHeight>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parent_Row1" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="10" y="72"/></Offset></Anchor></Anchors>
+			</Frame>
+			<Frame name="$parent_Row2" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row1" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row3" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row2" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row4" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row3" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row5" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row4" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row6" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row5" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row7" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row6" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row8" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row7" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row9" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row8" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row10" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row9" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row11" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row10" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Frame name="$parent_Row12" inherits="CardCounterRowTemplate">
+				<Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Row11" relativePoint="BOTTOMLEFT"/></Anchors>
+			</Frame>
+			<Slider name="$parent_Scroll" inherits="UIPanelScrollBarTemplate" enableMouse="true">
+				<Size><AbsDimension x="12" y="200"/></Size>
+				<Anchors><Anchor point="TOPRIGHT"><Offset><AbsDimension x="-12" y="90"/></Offset></Anchor></Anchors>
+				<Scripts>
+					<OnLoad>this:SetValueStepMode("INT"); this:SetMinMaxValues(0, 0)</OnLoad>
+					<OnValueChanged>
+						UIPanelScrollBar_OnValueChanged(this, arg1)
+						CardCounter.OnScrollChanged(this, arg1)
+					</OnValueChanged>
+					<OnMouseWheel>CardCounter.OnMouseWheel(delta)</OnMouseWheel>
+				</Scripts>
+			</Slider>
+			<Button name="$parent_Prev" inherits="UIPanelButtonTemplate" text="&lt;" hidden="true">
+				<Size><AbsDimension x="24" y="20"/></Size>
+				<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="10" y="46"/></Offset></Anchor></Anchors>
+				<Scripts><OnClick>CardCounter.ChangeHistory(-1)</OnClick></Scripts>
+			</Button>
+			<Button name="$parent_Next" inherits="UIPanelButtonTemplate" text="&gt;" hidden="true">
+				<Size><AbsDimension x="24" y="20"/></Size>
+				<Anchors><Anchor point="TOPRIGHT"><Offset><AbsDimension x="-10" y="46"/></Offset></Anchor></Anchors>
+				<Scripts><OnClick>CardCounter.ChangeHistory(1)</OnClick></Scripts>
+			</Button>
+			<Button name="$parent_Close" inherits="UIPanelCloseButtonTemplate">
+				<Size><AbsDimension x="20" y="20"/></Size>
+				<Anchors><Anchor point="TOPRIGHT"><Offset><AbsDimension x="-4" y="4"/></Offset></Anchor></Anchors>
+				<Scripts>
+					<OnClick>this:GetParent():Hide()</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_HistoryBtn" inherits="UIPanelButtonTemplate" text="Archiwum">
+				<Size><AbsDimension x="104" y="24"/></Size>
+				<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="10" y="340"/></Offset></Anchor></Anchors>
+				<Scripts>
+					<OnClick>CardCounter.ToggleHistory()</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner(this, "ANCHOR_TOP")
+						GameTooltip:SetText("Archiwum poprzednich sesji")
+						GameTooltip:Show()
+					</OnEnter>
+					<OnLeave>GameTooltip:Hide()</OnLeave>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Reset" inherits="UIPanelButtonTemplate" text="Zapisz / nowa sesja">
+				<Size><AbsDimension x="210" y="24"/></Size>
+				<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="120" y="340"/></Offset></Anchor></Anchors>
+				<Scripts>
+					<OnClick>CardCounter.ResetSession()</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner(this, "ANCHOR_TOP")
+						GameTooltip:SetText("Archiwizuje biezaca sesje i zaczyna nowa")
+						GameTooltip:Show()
+					</OnEnter>
+					<OnLeave>GameTooltip:Hide()</OnLeave>
+				</Scripts>
+			</Button>
+			<Button name="$parent_ResetAll" inherits="UIPanelButtonTemplate" text="Reset wszystkiego">
+				<Size><AbsDimension x="210" y="24"/></Size>
+				<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="10" y="370"/></Offset></Anchor></Anchors>
+				<Scripts>
+					<OnClick>CardCounter.ResetAll()</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner(this, "ANCHOR_TOP")
+						GameTooltip:SetText("Kasuje licznik calkowity, sesje i archiwum")
+						GameTooltip:Show()
+					</OnEnter>
+					<OnLeave>GameTooltip:Hide()</OnLeave>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnShow>CardCounter.OnShowFrame()</OnShow>
+			<OnMouseWheel>CardCounter.OnMouseWheel(delta)</OnMouseWheel>
+			<OnDragStart>this:StartMoving()</OnDragStart>
+			<OnDragStop>CardCounter.OnDragStop(this)</OnDragStop>
+		</Scripts>
+	</Frame>
+</Ui>
